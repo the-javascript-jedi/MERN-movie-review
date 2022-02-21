@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"node index.js",
-    "devStart":"nodemon index.js",
+    "start": "node index.js",
+    "devStart": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -14,6 +14,7 @@
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
     "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.15"
   }
 }
