@@ -7,8 +7,8 @@ function App() {
   const [movieName, setMovieName] = useState("");
   const [review, setReview] = useState("");
   const [movieReviewList, setMovieReviewList] = useState([]);
-  // useEffect
-  useEffect(() => {
+  // GET request
+  const getData = () => {
     try {
       Axios.get("http://localhost:5000/api/getMovies").then((response) => {
         console.log("response", response.data);
@@ -17,7 +17,12 @@ function App() {
     } catch (e) {
       console.error("error", e);
     }
+  };
+  useEffect(() => {
+    // API Call to get data
+    getData();
   }, []);
+  // Insert Review
   const submitReview = () => {
     console.log("submitReview called");
     Axios.post("http://localhost:5000/api/insert", {
@@ -27,11 +32,29 @@ function App() {
       .then((response) => {
         console.log(response);
         alert("successfull insert");
+        // API Call to get data
+        getData();
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+  // Delete Review
+  const deleteReview = (movieId) => {
+    try {
+      Axios.delete(`http://localhost:5000/api/delete/${movieId}`).then(
+        (response) => {
+          console.log("response deleted", response);
+          // API Call to get data
+          getData();
+        }
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  // Update Review
+
   return (
     <div className="App">
       <h1>CRUD Application</h1>
@@ -59,9 +82,19 @@ function App() {
       <div className="moviesReviewList">
         {movieReviewList.map((val) => {
           return (
-            <h1>
-              MovieName:{val.movieName} | Movie Review: {val.movieReview}
-            </h1>
+            <div className="card" key={val.Id}>
+              <h1>MovieName:{val.movieName}</h1>
+              <p>Movie Review: {val.movieReview}</p>
+              <div>
+                <input type="text" />
+              </div>
+              <button
+                className="btn-delete"
+                onClick={() => deleteReview(val.Id)}
+              >
+                Delete
+              </button>
+            </div>
           );
         })}
       </div>
