@@ -1,12 +1,23 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 
 function App() {
   // state
   const [movieName, setMovieName] = useState("");
   const [review, setReview] = useState("");
-
+  const [movieReviewList, setMovieReviewList] = useState([]);
+  // useEffect
+  useEffect(() => {
+    try {
+      Axios.get("http://localhost:5000/api/getMovies").then((response) => {
+        console.log("response", response.data);
+        setMovieReviewList(response.data);
+      });
+    } catch (e) {
+      console.error("error", e);
+    }
+  }, []);
   const submitReview = () => {
     console.log("submitReview called");
     Axios.post("http://localhost:5000/api/insert", {
@@ -44,6 +55,15 @@ function App() {
           value={review}
         ></input>
         <button onClick={submitReview}>Submit</button>
+      </div>
+      <div className="moviesReviewList">
+        {movieReviewList.map((val) => {
+          return (
+            <h1>
+              MovieName:{val.movieName} | Movie Review: {val.movieReview}
+            </h1>
+          );
+        })}
       </div>
     </div>
   );
