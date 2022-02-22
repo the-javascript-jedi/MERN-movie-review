@@ -7,6 +7,7 @@ function App() {
   const [movieName, setMovieName] = useState("");
   const [review, setReview] = useState("");
   const [movieReviewList, setMovieReviewList] = useState([]);
+  const [updateReviewInfo, setUpdateReviewInfo] = useState("");
   // GET request
   const getData = () => {
     try {
@@ -54,7 +55,21 @@ function App() {
     }
   };
   // Update Review
-
+  const updateReview = (movieId) => {
+    try {
+      Axios.put(`http://localhost:5000/api/update`, {
+        movieId: movieId,
+        movieName: movieName,
+        movieReview: updateReviewInfo,
+      }).then((response) => {
+        console.log("response updated", response);
+        // API Call to get data
+        getData();
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <div className="App">
       <h1>CRUD Application</h1>
@@ -77,6 +92,7 @@ function App() {
           }}
           value={review}
         ></input>
+        {/* submit review */}
         <button onClick={submitReview}>Submit</button>
       </div>
       <div className="moviesReviewList">
@@ -86,8 +102,19 @@ function App() {
               <h1>MovieName:{val.movieName}</h1>
               <p>Movie Review: {val.movieReview}</p>
               <div>
-                <input type="text" />
+                {/* update review */}
+                <input
+                  type="text"
+                  // value={updateReviewInfo}
+                  onChange={(e) => {
+                    setUpdateReviewInfo(e.target.value);
+                  }}
+                />
+                <button onClick={() => updateReview(val.Id)}>
+                  Update Review
+                </button>
               </div>
+              {/* Delete review */}
               <button
                 className="btn-delete"
                 onClick={() => deleteReview(val.Id)}
@@ -101,5 +128,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

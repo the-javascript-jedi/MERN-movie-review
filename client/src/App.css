@@ -19,10 +19,11 @@
 
 .card {
   width: 500px;
-  height: 150px;
+  height: 200px;
   border: 2px solid #000;
   border-radius: 10px;
   position: relative;
+  margin-bottom: 1rem;
 }
 .btn-delete {
   position: absolute;
