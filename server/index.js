@@ -49,6 +49,22 @@ app.delete("/api/delete/:movieId", (req, res) => {
     }
   });
 });
+// UPDATE Request
+app.put("/api/update", (req, res) => {
+  const movieId = req.body.movieId;
+  // const name = req.body.movieName;
+  const review = req.body.movieReview;
+  const sqlUpdate = "UPDATE movie_reviews SET movieReview = ? WHERE Id=?";
+  db.query(sqlUpdate, [review, movieId], (err, result) => {
+    if (err) {
+      console.log("err update", err);
+    } else {
+      console.log("result update", result);
+      res.send({ status: 200, msg: `Ypdated ${movieId}` });
+    }
+  });
+});
+
 app.listen(5000, () => {
   console.log("running on port 5000");
 });
